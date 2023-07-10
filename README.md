@@ -1,4 +1,4 @@
-https://anapisarek.github.io/goit-react-hw-02-feedback/
+https://anapisarek.github.io/goit-react-hw-02-phonebook/
 
 # React homework template
 
