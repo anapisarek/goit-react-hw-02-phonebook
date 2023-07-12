@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import css from './ContactForm.module.css';
 import PropTypes from 'prop-types';
+import Notiflix from 'notiflix';
 
 class ContactForm extends Component {
   state = {
@@ -18,6 +19,15 @@ class ContactForm extends Component {
     const form = event.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
+
+    const regexName = new RegExp("^[a-zA-Za]+(([' -][a-zA-Za])?[a-zA-Za]*)*$");
+    const regexNumberPattern = /^\+?\d{1,4}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+    const regexNumber = new RegExp(regexNumberPattern);
+
+    if (!regexName.test(name) || !regexNumber.test(number)) {
+      Notiflix.Notify.failure('Correct inputed data');
+      return;
+    }
 
     const doubleContact = this.props.contacts.find(
       contact => contact.name === name
@@ -46,7 +56,7 @@ class ContactForm extends Component {
           type="text"
           name="name"
           value={this.state.name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="^[a-zA-Za]+(([' \-][a-zA-Za])?[a-zA-Za]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
         ></input>
@@ -57,7 +67,7 @@ class ContactForm extends Component {
           type="tel"
           name="number"
           value={this.state.number}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
         ></input>
